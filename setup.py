@@ -1,10 +1,20 @@
 from setuptools import setup, find_packages
 
+with open('README.md') as f:
+    readme = f.read()
+
 setup(name='sensormotion',
       version='1.0.0',
       description='Python package for analyzing sensor-collected human motion '
                   'data (e.g. physical activity levels, gait dynamics)',
+      long_description=readme,
+      long_description_content_type='text/markdown',
       url='https://github.com/sho-87/sensormotion',
+      project_urls={
+          'Documentation': 'http://sensormotion.readthedocs.io',
+          'Source': 'https://github.com/sho-87/sensormotion',
+          'Tracker': 'https://github.com/sho-87/sensormotion/issues',
+      },
       author='Simon Ho',
       author_email='simonho213@gmail.com',
       license='MIT',
