@@ -4,7 +4,7 @@ with open('README.md') as f:
     readme = f.read()
 
 setup(name='sensormotion',
-      version='1.0.0',
+      version='1.0.1',
       description='Python package for analyzing sensor-collected human motion '
                   'data (e.g. physical activity levels, gait dynamics)',
       long_description=readme,
