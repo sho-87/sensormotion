@@ -3,7 +3,7 @@
 Sensor Motion
 =============
 
-.. image:: https://readthedocs.org/projects/sensormotion/badge/
+.. image:: https://readthedocs.org/projects/sensormotion/badge/?version=stable
    :target: http://sensormotion.readthedocs.io
 
 .. image:: https://badges.gitter.im/gitterHQ/gitter.png
