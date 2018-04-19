@@ -64,7 +64,7 @@ Python packages:
 Usage
 -----
 
-Here is example workflow for extracting step-based metrics from raw
+Here is brief example of extracting step-based metrics from raw
 vertical acceleration data:
 
 Import the package:
@@ -105,7 +105,10 @@ and step time:
     cadence = sm.gait.cadence(time=t, peak_times=peak_times, time_units='ms')
     step_mean, step_sd, step_cov = sm.gait.step_time(peak_times=peak_times)
 
-I would recommend looking over the
+For a more in-depth tutorial, and more workflow examples, please take a look
+at the `tutorial <https://github.com/sho-87/sensormotion/tutorial.ipynb>`__.
+
+I would also recommend looking over the
 `documentation <http://sensormotion.readthedocs.io>`__ to see other
 functionalities of the package.
 
