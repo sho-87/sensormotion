@@ -105,7 +105,9 @@ for bug reports and feature requests.
 
 ## Getting Help
 
-You can find the full documentation for the package [here](http://sensormotion.readthedocs.io) 
+You can find the full documentation for the package [here](http://sensormotion.readthedocs.io)
+
+Python's built-in help function will show documentation for any module or function: `help(sm.gait.step_time)`
 
 You're encouraged to post questions, bug reports, or feature requests as an [issue](https://github.com/sho-87/sensormotion/issues)
 
