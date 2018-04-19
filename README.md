@@ -55,14 +55,14 @@ vertical acceleration data:
 
 Import the package:
 
-```
+```python
 import sensormotion as sm
 ```
 
 If you have a vertical acceleration signal `x`, and its corresponding time 
 signal `t`, we can begin by filtering the signal using a low-pass filter:
 
-```
+```python
 b, a = sm.signal.build_filter(frequency=10, 
                               sample_rate=100,
                               filter_type='low',
@@ -75,7 +75,7 @@ Next, we can detect the peaks (or valleys) in the filtered signal, which gives
 us the time and value of each detection. Optionally, we can include a plot 
 of the signal and detected peaks/valleys:
 
-```
+```python
 peak_times, peak_values = sm.peak.find_peaks(time=t, signal=x_filtered,
                                              peak_type='valley',
                                              min_val=0.6, min_dist=30,
@@ -85,7 +85,7 @@ peak_times, peak_values = sm.peak.find_peaks(time=t, signal=x_filtered,
 From the detected peaks, we can then calculate step metrics like cadence and 
 step time:
 
-```
+```python
 cadence = sm.gait.cadence(time=t, peak_times=peak_times, time_units='ms')
 step_mean, step_sd, step_cov = sm.gait.step_time(peak_times=peak_times)
 ```
