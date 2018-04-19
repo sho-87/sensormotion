@@ -23,14 +23,18 @@ has been imported:
   >>> import sensormotion as sm
 
 Then, use the built-in ``help`` function to view the docstring for any
-function or module:
+module or function:
 
-  >>> help(sm.gait.step_symmetry)
+  >>> help(sm.gait)
+
+  >>> help(sm.peak.find_peaks)
 
 Modules
 -------
 gait
     Calculate various types of gait dynamics (cadence, symmetry etc.)
+pa
+    Calculate physical activity (PA) levels with conversion to activity counts
 peak
     Detect peaks and valleys in a signal
 plot
@@ -42,6 +46,7 @@ utils
 """
 
 import sensormotion.gait
+import sensormotion.pa
 import sensormotion.peak
 import sensormotion.plot
 import sensormotion.signal
