@@ -1,6 +1,14 @@
 sensormotion package
 ====================
 
+Module contents
+---------------
+
+.. automodule:: sensormotion
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Submodules
 ----------
 
@@ -48,15 +56,6 @@ sensormotion\.utils module
 --------------------------
 
 .. automodule:: sensormotion.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: sensormotion
     :members:
     :undoc-members:
     :show-inheritance:
