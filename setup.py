@@ -1,14 +1,16 @@
 from setuptools import setup, find_packages
 
-with open('README.md') as f:
-    readme = f.read()
+
+def readme():
+    with open('README.rst') as f:
+        return f.read()
+
 
 setup(name='sensormotion',
-      version='1.0.1',
+      version='1.0.2',
       description='Python package for analyzing sensor-collected human motion '
                   'data (e.g. physical activity levels, gait dynamics)',
-      long_description=readme,
-      long_description_content_type='text/markdown',
+      long_description=readme(),
       url='https://github.com/sho-87/sensormotion',
       project_urls={
           'Documentation': 'http://sensormotion.readthedocs.io',
