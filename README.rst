@@ -3,11 +3,13 @@
 Sensor Motion
 =============
 
-.. image:: https://readthedocs.org/projects/sensormotion/badge/?version=stable
+.. image:: https://readthedocs.org/projects/sensormotion/badge/?version=latest
    :target: http://sensormotion.readthedocs.io
 
 .. image:: https://badges.gitter.im/gitterHQ/gitter.png
    :target: https://gitter.im/sensormotion/lobby
+
+.. inclusion-marker-main-readme
 
 Python package for analyzing sensor-collected human motion data (e.g.
 physical activity levels, gait dynamics).
