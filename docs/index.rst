@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Sensor Motion
-=============
+-------------
 
 .. toctree::
    :maxdepth: 2
@@ -13,8 +13,8 @@ Sensor Motion
 .. include:: ../README.rst
    :start-after: inclusion-marker-main-readme
 
-Indices and tables
-==================
+Index & Modules
+---------------
 
 * :ref:`genindex`
 * :ref:`modindex`

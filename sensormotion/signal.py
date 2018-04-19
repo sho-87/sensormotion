@@ -136,7 +136,7 @@ def detrend_signal(signal, degree):
         degree may fail to detect all the baseline present, while a high
         degree may make the data too oscillatory, especially at the edges. A
         value of 0 will not apply any baseline detrending. The baseline for
-        detrending is calculated by :func:`signal.baseline`.
+        detrending is calculated by :func:`sensormotion.signal.baseline`.
 
     Returns
     -------
@@ -206,9 +206,10 @@ def filter_signal(b, a, signal):
     """
     Filter a signal.
 
-    Simple wrapper around `scipy.signal.filtfilt()` to apply a
+    Simple wrapper around :func:`scipy.signal.filtfilt` to apply a
     foward-backward filter to preserve phase of the input. Requires the
-    numerator and denominator polynomials from :func:`signal.build_filter`.
+    numerator and denominator polynomials from
+    :func:`sensormotion.signal.build_filter`.
 
     Parameters
     ----------

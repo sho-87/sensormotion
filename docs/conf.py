@@ -65,7 +65,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'sensormotion'
+project = 'Sensor Motion'
 copyright = '2018, Simon Ho'
 author = 'Simon Ho'
 
@@ -95,6 +95,12 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+# If true, the current module name will be prepended to all description
+# unit titles (such as .. function::).
+add_module_names = False
+
+add_function_parentheses = True
 
 
 # -- Options for HTML output ----------------------------------------------

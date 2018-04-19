@@ -1,6 +1,6 @@
 """
-sensormotion
-============
+Sensor Motion
+=============
 
 Provides tools for analyzing sensor-collected human motion data. This
 includes, for example, estimation of gait dynamics from accelerometer data,
@@ -11,8 +11,8 @@ accelerometer signals.
 This package was primarily developed for use on Android sensor data collected
 at the Attentional Neuroscience Lab (University of British Columbia).
 
-Documentation
--------------
+Accessing Documentation
+-----------------------
 Documentation is available via docstrings provided with the code, and an
 online API reference found at
 `ReadTheDocs <http://sensormotion.readthedocs.io>`_.
@@ -29,19 +29,19 @@ module or function:
 
   >>> help(sm.peak.find_peaks)
 
-Modules
--------
-gait
+Package Overview
+----------------
+gait module
     Calculate various types of gait dynamics (cadence, symmetry etc.)
-pa
+pa module
     Calculate physical activity (PA) levels with conversion to activity counts
-peak
+peak module
     Detect peaks and valleys in a signal
-plot
+plot module
     Wrapper functions for creating simple graphs
-signal
+signal module
     Signal processing tools such as filtering and cross-correlation
-utils
+utils module
     General utility functions used throughout the package
 """
 

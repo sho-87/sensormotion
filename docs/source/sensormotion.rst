@@ -1,16 +1,10 @@
-sensormotion package
-====================
-
-Module contents
----------------
-
 .. automodule:: sensormotion
     :members:
     :undoc-members:
     :show-inheritance:
 
-Submodules
-----------
+Module Reference
+================
 
 sensormotion\.gait module
 -------------------------

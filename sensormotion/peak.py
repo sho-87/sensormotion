@@ -34,7 +34,8 @@ def find_peaks(time, signal, peak_type='peak', min_val=0.5, min_dist=25,
     peak_type : {'peak', 'valley', 'both'}, optional
         Type of peaks to be detected. `peak` will return positive peaks.
         `valley` will return negative peaks. `both` will return both peaks and
-        valleys. Peak indices are calculated by calling :func:`peak.indexes`.
+        valleys. Peak indices are calculated by calling
+        :func:`sensormotion.peak.indexes`.
     min_val : float between [0., 1.], optional
         Normalized threshold. Only the peaks with amplitude higher than the
         threshold will be detected.
@@ -46,7 +47,7 @@ def find_peaks(time, signal, peak_type='peak', min_val=0.5, min_dist=25,
         degree may fail to detect all the baseline present, while a high
         degree may make the data too oscillatory, especially at the edges. A
         value of 0 will not apply any baseline detrending. The baseline for
-        detrending is calculated by :func:`signal.baseline`.
+        detrending is calculated by :func:`sensormotion.signal.baseline`.
     plot : bool, optional
         Toggle to create a plot of the signal with peaks/valleys overlaid.
     show_grid : bool, optional

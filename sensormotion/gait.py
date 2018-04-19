@@ -29,8 +29,8 @@ def cadence(time, peak_times, time_units='ms'):
         Time vector of the original acceleration signal. Used to calculate
         duration of the input signal.
     peak_times : ndarray
-        Time of each peak, returned by :func:`peak.find_peaks`. This provides
-        the number of steps within the timeframe of the signal.
+        Time of each peak, returned by :func:`sensormotion.peak.find_peaks`.
+        This provides the number of steps within the timeframe of the signal.
     time_units : {'ms', 's'}, optional
         Units of the time signal.
 
@@ -62,7 +62,7 @@ def step_count(peak_times):
     Parameters
     ----------
     peak_times : ndarray
-        Times of the peaks detected by :func:`peak.find_peaks`.
+        Times of the peaks detected by :func:`sensormotion.peak.find_peaks`.
 
     Returns
     -------
@@ -85,38 +85,41 @@ def step_regularity(autocorr_peak_values):
     If calculating regularity from acceleration in the vertical axis, this
     function receives the detected peaks from the vertical axis
     autocorrelation.
+
     However, if calculating regularity from lateral axis
     acceleration, you should pass in *both* peaks and valleys from the
     autocorrelation of the lateral axis.
 
-    Step regularity:
+    **Step regularity:**
 
-    Perfect step regularity will be `1.0` for vertical axis autocorrelation
-    (the larger the better, capped at `1.0`).
-    For the lateral axis, perfect regularity is `-1.0` (the smaller the
-    better, capped at `-1.0`).
-
-    Stride regularity:
-
-    Perfect stride regularity will be `1.0` for vertical axis autocorrelation
+    Perfect step regularity will be 1.0 for vertical axis autocorrelation
     (the larger the better, capped at 1.0).
+
+    For the lateral axis, perfect regularity is -1.0 (the smaller the
+    better, capped at -1.0).
+
+    **Stride regularity:**
+
+    Perfect stride regularity will be 1.0 for vertical axis autocorrelation
+    (the larger the better, capped at 1.0).
+
     Lateral axis sign and interpretation are the same as the vertical axis.
 
     Parameters
     ----------
     autocorr_peak_values : ndarray
         Values of the autocorrelation peaks/valleys detected by
-        :func:`peak.find_peaks`. This should contain only peak values when
-        looking at the vertical axis, and both peak and valley values when
-        looking at the lateral axis.
+        :func:`sensormotion.peak.find_peaks`. This should contain only peak
+        values when looking at the vertical axis, and both peak and valley
+        values when looking at the lateral axis.
 
     Returns
     -------
     step_reg : float
-        Step regularity. Value is capped at `1.0` or `-1.0` depending on the
+        Step regularity. Value is capped at 1.0 or -1.0 depending on the
         axis of interest.
     stride_reg : float
-        Stride regularity. Capped at `1.0` for both vertical and lateral axes.
+        Stride regularity. Capped at 1.0 for both vertical and lateral axes.
     """
 
     peaks_half = autocorr_peak_values[autocorr_peak_values.size//2:]
@@ -141,27 +144,29 @@ def step_symmetry(autocorr_peak_values):
     If calculating symmetry from acceleration in the vertical axis, this
     function receives the detected peaks from the vertical axis
     autocorrelation.
+
     However, if calculating symmetry from lateral axis
     acceleration, you should pass in *both* peaks and valleys from the
     autocorrelation of the lateral axis.
 
-    Perfect step symmetry is `1.0` for the vertical axis - larger values are
-    more symmetric, capped at `1.0`.
-    Perfect step symmetry is `-1.0` for the lateral axis - smaller values are
-    more symmetric, capped at `-1.0`.
+    Perfect step symmetry is 1.0 for the vertical axis - larger values are
+    more symmetric, capped at 1.0.
+
+    Perfect step symmetry is -1.0 for the lateral axis - smaller values are
+    more symmetric, capped at -1.0.
 
     Parameters
     ----------
     autocorr_peak_values : ndarray
         Values of the autocorrelation peaks/valleys detected by
-        :func:`peak.find_peaks`. This should contain only peak values when
-        looking at the vertical axis, and both peak and valley values when
-        looking at the lateral axis.
+        :func:`sensormotion.peak.find_peaks`. This should contain only peak
+        values when looking at the vertical axis, and both peak and valley
+        values when looking at the lateral axis.
 
     Returns
     -------
     step_sym : float
-        Step symmetry. Value is capped at `1.0` or `-1.0` depending on the
+        Step symmetry. Value is capped at 1.0 or -1.0 depending on the
         axis of interest.
     """
 
@@ -190,7 +195,7 @@ def step_time(peak_times):
     Parameters
     ----------
     peak_times : ndarray
-        Times of the peaks detected by :func:`peak.find_peaks`.
+        Times of the peaks detected by :func:`sensormotion.peak.find_peaks`.
 
     Returns
     -------
@@ -199,7 +204,7 @@ def step_time(peak_times):
     step_time_sd : float
         Standard deviation of the distribution of step times in the signal.
     step_time_cov : float
-        Coefficient of variation. Calculated as `sd/mean`.
+        Coefficient of variation. Calculated as sd/mean.
     """
 
     peak_time_differences = np.diff(peak_times)

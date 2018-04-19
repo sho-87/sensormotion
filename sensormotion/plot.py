@@ -96,8 +96,7 @@ def plot_signal(time, signal, title='', xlab='', ylab='',
                                            'color': 'b'},
                                           {'data': line2_data,
                                            'label': 'second line',
-                                           'line_Width': 4}]
-                            )
+                                           'line_Width': 4}])
     title : str, optional
         Title of the plot.
     xlab : str, optional

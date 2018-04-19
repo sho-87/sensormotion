@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='sensormotion',
-      version='1.0.2',
+      version='1.0.3',
       description='Python package for analyzing sensor-collected human motion '
                   'data (e.g. physical activity levels, gait dynamics)',
       long_description=readme(),
