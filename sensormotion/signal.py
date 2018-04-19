@@ -11,7 +11,7 @@ from __future__ import print_function, division
 import math
 import matplotlib.pyplot as plt
 import numpy as np
-import gaitdynamics.plot
+import sensormotion.plot
 import scipy.linalg as la
 
 from scipy.signal import butter, filtfilt
@@ -48,9 +48,12 @@ def baseline(y, deg=None, max_it=None, tol=None):
     """
 
     # for not repeating ourselves in `envelope`
-    if deg is None: deg = 3
-    if max_it is None: max_it = 100
-    if tol is None: tol = 1e-3
+    if deg is None:
+        deg = 3
+    if max_it is None:
+        max_it = 100
+    if tol is None:
+        tol = 1e-3
 
     order = deg + 1
     coeffs = np.ones(order)
@@ -116,7 +119,7 @@ def build_filter(frequency, sample_rate, filter_type, filter_order):
 
     b, a = butter(filter_order, nyq_cutoff, btype=filter_type, analog=False)
 
-    return (b, a)
+    return b, a
 
 
 def detrend_signal(signal, degree):
@@ -142,7 +145,7 @@ def detrend_signal(signal, degree):
     """
 
     signal_baseline = baseline(signal, deg=degree)
-    return (signal - signal_baseline)
+    return signal - signal_baseline
 
 
 def fft(signal, sampling_rate, plot=False, show_grid=True, fig_size=(10, 5)):
@@ -170,12 +173,13 @@ def fft(signal, sampling_rate, plot=False, show_grid=True, fig_size=(10, 5)):
     signal_fft : ndarray
         Transformation of the original input signal.
     """
-    N = len(signal)
-    T = 1.0 / sampling_rate
-    time = range(N)  # Time vector
 
-    xf = np.linspace(0.0, 1.0/(2.0*T), N//2)
-    yf = np.fft.fft(signal) / N  # FFT and normalize
+    n = len(signal)
+    t = 1.0 / sampling_rate
+    time = range(n)  # Time vector
+
+    xf = np.linspace(0.0, 1.0/(2.0*t), n//2)
+    yf = np.fft.fft(signal) / n  # FFT and normalize
 
     if plot:
         f, axarr = plt.subplots(2, 1, figsize=fig_size)
@@ -186,7 +190,7 @@ def fft(signal, sampling_rate, plot=False, show_grid=True, fig_size=(10, 5)):
         axarr[0].set_ylabel('Amplitude')
         axarr[0].grid(show_grid)
 
-        axarr[1].plot(xf, abs(yf[0:N//2]), 'r')  # Plot the spectrum
+        axarr[1].plot(xf, abs(yf[0:n//2]), 'r')  # Plot the spectrum
         axarr[1].set_xlabel('Freq (Hz)')
         axarr[1].set_ylabel('|Y(freq)|')
         axarr[1].grid(show_grid)
@@ -198,7 +202,7 @@ def fft(signal, sampling_rate, plot=False, show_grid=True, fig_size=(10, 5)):
     return yf
 
 
-def filter(b, a, signal):
+def filter_signal(b, a, signal):
     """
     Filter a signal.
 
@@ -220,6 +224,7 @@ def filter(b, a, signal):
     signal_filtered : ndarray
         Filtered output of the original input signal.
     """
+
     return filtfilt(b, a, signal)
 
 
@@ -245,6 +250,7 @@ def magnitude_acceleration(x, y, z):
     mag_acc : ndarray
         Magnitude of total acceleration (across input axes) at each time point.
     """
+
     return np.sqrt(x**2 + y**2 + z**2)
 
 
@@ -285,6 +291,7 @@ def xcorr(x, y, scale='none', plot=False, show_grid=True, fig_size=(10, 5)):
     lags : ndarray
         Lags for the cross-correlations.
     """
+
     x = np.array(x)
     y = np.array(y)
 
@@ -309,9 +316,10 @@ def xcorr(x, y, scale='none', plot=False, show_grid=True, fig_size=(10, 5)):
         corr /= np.sqrt(np.dot(x, x) * np.dot(y, y))
 
     if plot:
-        gaitdynamics.plot.plot_signal(lags, corr,
-                    title='Cross-correlation (scale: {})'.format(scale),
-                    xlab='Lag', ylab='Correlation',
-                    show_grid=show_grid, fig_size=fig_size)
+        sensormotion.plot.plot_signal(lags, corr,
+                                      title='Cross-correlation (scale: {})'.format(scale),
+                                      xlab='Lag', ylab='Correlation',
+                                      show_grid=show_grid,
+                                      fig_size=fig_size)
 
-    return (corr, lags)
+    return corr, lags

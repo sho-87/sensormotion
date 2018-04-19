@@ -1,8 +1,10 @@
 """
-gaitdynamics
+sensormotion
 ============
 
-Provides tools for estimating gait dynamics from accelerometer data. Also
+Provides tools for analyzing sensor-collected human motion data. This
+includes, for example, estimation of gait dynamics from accelerometer data,
+and conversion to physical activity (MVPA) counts from acceleration. Also
 contains a few useful functions for pre-processing and visualizing
 accelerometer signals.
 
@@ -13,17 +15,17 @@ Documentation
 -------------
 Documentation is available via docstrings provided with the code, and an
 online API reference found at
-`ReadTheDocs <http://gaitdynamics.readthedocs.io>`_.
+`ReadTheDocs <http://sensormotion.readthedocs.io>`_.
 
 To view documentation for a function or module, first make sure the package
 has been imported:
 
-  >>> import gaitdynamics as gd
+  >>> import sensormotion as sm
 
 Then, use the built-in ``help`` function to view the docstring for any
 function or module:
 
-  >>> help(gd.gait.step_symmetry)
+  >>> help(sm.gait.step_symmetry)
 
 Modules
 -------
@@ -39,8 +41,8 @@ utils
     General utility functions used throughout the package
 """
 
-import gaitdynamics.gait
-import gaitdynamics.peak
-import gaitdynamics.plot
-import gaitdynamics.signal
-import gaitdynamics.utils
+import sensormotion.gait
+import sensormotion.peak
+import sensormotion.plot
+import sensormotion.signal
+import sensormotion.utils

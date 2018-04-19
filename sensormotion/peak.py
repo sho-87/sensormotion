@@ -11,7 +11,7 @@ Based on work by
 
 from __future__ import print_function, division
 
-import gaitdynamics.signal
+import sensormotion.signal
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -72,7 +72,7 @@ def find_peaks(time, signal, peak_type='peak', min_val=0.5, min_dist=25,
     if detrend == 0:  # No detrending - don't calculate baseline
         new_signal = signal
     else:  # Detrend the signal
-        new_signal = gaitdynamics.signal.detrend_signal(signal, detrend)
+        new_signal = sensormotion.signal.detrend_signal(signal, detrend)
 
     # Check peak type
     if peak_type == 'peak':
@@ -115,13 +115,14 @@ def find_peaks(time, signal, peak_type='peak', min_val=0.5, min_dist=25,
 
         f.subplots_adjust(hspace=0.5)
         suptitle_string = 'Peak Detection (val: {}, dist: {})'
-        plt.suptitle(suptitle_string.format(min_val, min_dist), y=1.01, size=16)
+        plt.suptitle(suptitle_string.format(min_val, min_dist),
+                     y=1.01, size=16)
         plt.show()
 
     if detrend == 0:
-        return (time[peaks], signal[peaks])
+        return time[peaks], signal[peaks]
     else:
-        return (time[peaks], new_signal[peaks], new_signal)
+        return time[peaks], new_signal[peaks], new_signal
 
 
 def indexes(y, thres=0.3, min_dist=1):
@@ -149,7 +150,8 @@ def indexes(y, thres=0.3, min_dist=1):
         Array containing the numeric indexes of the peaks that were detected
     """
 
-    if isinstance(y, np.ndarray) and np.issubdtype(y.dtype, np.unsignedinteger):
+    if isinstance(y, np.ndarray) and np.issubdtype(y.dtype,
+                                                   np.unsignedinteger):
         raise ValueError("y must be signed")
 
     thres = thres * (np.max(y) - np.min(y)) + np.min(y)
@@ -160,7 +162,7 @@ def indexes(y, thres=0.3, min_dist=1):
 
     # propagate left and right values successively to fill all
     # plateau pixels (0-value)
-    zeros,=np.where(dy == 0)
+    zeros, = np.where(dy == 0)
 
     # check if the singal is totally flat
     if len(zeros) == len(y) - 1:
@@ -173,12 +175,12 @@ def indexes(y, thres=0.3, min_dist=1):
         zerosl = np.hstack([0., dy[:-1]])
 
         # replace 0 with right value if non zero
-        dy[zeros]=zerosr[zeros]
-        zeros,=np.where(dy == 0)
+        dy[zeros] = zerosr[zeros]
+        zeros, = np.where(dy == 0)
 
         # replace 0 with left value if non zero
-        dy[zeros]=zerosl[zeros]
-        zeros,=np.where(dy == 0)
+        dy[zeros] = zerosl[zeros]
+        zeros, = np.where(dy == 0)
 
     # find the peaks by using the first order difference
     peaks = np.where((np.hstack([dy, 0.]) < 0.)

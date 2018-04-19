@@ -31,7 +31,7 @@ def cadence(time, peak_times, time_units='ms'):
     peak_times : ndarray
         Time of each peak, returned by :func:`peak.find_peaks`. This provides
         the number of steps within the timeframe of the signal.
-    time_units : {'ms' 's'}, optional
+    time_units : {'ms', 's'}, optional
         Units of the time signal.
 
     Returns
@@ -39,6 +39,7 @@ def cadence(time, peak_times, time_units='ms'):
     cadence : float
         Estimated cadence for the input signal.
     """
+
     n = step_count(peak_times)
 
     # Convert duration to seconds
@@ -68,6 +69,7 @@ def step_count(peak_times):
     step_count : int
         Number of steps/peaks in the signal.
     """
+
     return len(peak_times)
 
 
@@ -116,6 +118,7 @@ def step_regularity(autocorr_peak_values):
     stride_reg : float
         Stride regularity. Capped at `1.0` for both vertical and lateral axes.
     """
+
     peaks_half = autocorr_peak_values[autocorr_peak_values.size//2:]
     ac_lag0 = peaks_half[0]  # autocorrelation value at lag 0
     ac_d1 = peaks_half[1]  # first dominant period i.e. a step (left-right)
@@ -124,7 +127,7 @@ def step_regularity(autocorr_peak_values):
     step_reg = ac_d1 / ac_lag0
     stride_reg = ac_d2 / ac_lag0
 
-    return (step_reg, stride_reg)
+    return step_reg, stride_reg
 
 
 def step_symmetry(autocorr_peak_values):
@@ -161,6 +164,7 @@ def step_symmetry(autocorr_peak_values):
         Step symmetry. Value is capped at `1.0` or `-1.0` depending on the
         axis of interest.
     """
+
     peaks_half = autocorr_peak_values[autocorr_peak_values.size//2:]
     ac_d1 = peaks_half[1]  # first dominant period i.e. a step (left-right)
     ac_d2 = peaks_half[2]  # second dominant period i.e. a stride (left-left)
@@ -197,9 +201,10 @@ def step_time(peak_times):
     step_time_cov : float
         Coefficient of variation. Calculated as `sd/mean`.
     """
+
     peak_time_differences = np.diff(peak_times)
     peak_time_mean = np.mean(peak_time_differences)
     peak_time_sd = np.std(peak_time_differences)
     peak_time_cov = peak_time_sd / peak_time_mean
 
-    return (peak_time_mean, peak_time_sd, peak_time_cov)
+    return peak_time_mean, peak_time_sd, peak_time_cov

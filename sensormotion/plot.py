@@ -10,7 +10,7 @@ from __future__ import print_function, division
 
 import matplotlib.pyplot as plt
 import numpy as np
-import gaitdynamics.signal
+import sensormotion.signal
 
 from scipy.signal import freqz
 
@@ -43,7 +43,7 @@ def plot_filter_response(frequency, sample_rate, filter_type, filter_order=2,
         Tuple containing the width and height of the resulting figure.
     """
 
-    b, a = gaitdynamics.signal.build_filter(frequency, sample_rate,
+    b, a = sensormotion.signal.build_filter(frequency, sample_rate,
                                             filter_type, filter_order)
 
     # Plot the frequency response

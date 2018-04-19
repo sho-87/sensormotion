@@ -22,4 +22,5 @@ def ceildiv(a, b):
     result : float
         quotient of the division, rounded up to the nearest integer.
     """
+
     return -(-a // b)
