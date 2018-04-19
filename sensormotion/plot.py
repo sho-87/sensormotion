@@ -67,7 +67,6 @@ def plot_filter_response(frequency, sample_rate, filter_type, filter_order=2,
     plt.show()
 
 
-# TODO tidy up API for multiline plotting
 def plot_signal(time, signal, title='', xlab='', ylab='',
                 line_width=1, alpha=1, color='k',
                 subplots=False, show_grid=True, fig_size=(10, 5)):
