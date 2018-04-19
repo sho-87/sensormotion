@@ -106,7 +106,7 @@ and step time:
     step_mean, step_sd, step_cov = sm.gait.step_time(peak_times=peak_times)
 
 For a more in-depth tutorial, and more workflow examples, please take a look
-at the `tutorial <https://github.com/sho-87/sensormotion/tutorial.ipynb>`__.
+at the `tutorial <tutorial.ipynb>`__.
 
 I would also recommend looking over the
 `documentation <http://sensormotion.readthedocs.io>`__ to see other
