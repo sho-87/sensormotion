@@ -264,22 +264,18 @@ def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
         output = np.abs(signal)
 
     if plot:
-        f, axarr = plt.subplots(2, 1, figsize=fig_size)
+        f, ax = plt.subplots(1, 1, figsize=fig_size)
 
         time = np.arange(len(signal))
 
-        axarr[0].plot(time, signal)
-        axarr[0].set_title('Original')
-        axarr[0].set_xlim(min(time), max(time))
-        axarr[0].grid(show_grid)
+        ax.plot(time, signal, color='k', linewidth=1, alpha=0.5,
+                label='Original')
+        ax.plot(time, output, color='r', linewidth=0.9, label='Rectified')
+        ax.set_xlim(min(time), max(time))
+        ax.grid(show_grid)
+        ax.legend()
 
-        axarr[1].plot(time, output)
-        axarr[1].set_title('Rectified ({})'.format(rectifier_type))
-        axarr[1].set_xlim(min(time), max(time))
-        axarr[1].grid(show_grid)
-
-        f.subplots_adjust(hspace=0.5)
-        plt.suptitle('Rectified Signal', size=16)
+        plt.suptitle('Rectified Signal ({})'.format(rectifier_type), size=16)
         plt.show()
 
     return output
