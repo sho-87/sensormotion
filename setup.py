@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-
+from sensormotion import __version__
 
 def readme():
     with open('README.rst') as f:
@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='sensormotion',
-      version='1.0.3',
+      version=__version__,
       description='Python package for analyzing sensor-collected human motion '
                   'data (e.g. physical activity levels, gait dynamics)',
       long_description=readme(),

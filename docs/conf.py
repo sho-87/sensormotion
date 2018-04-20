@@ -19,7 +19,7 @@
 #
 import os
 import sys
-import pkg_resources
+from sensormotion import __version__
 sys.path.insert(0, os.path.abspath('../'))
 
 from mock import Mock as MagicMock
@@ -75,7 +75,7 @@ author = 'Simon Ho'
 # built documents.
 #
 # The short X.Y version.
-version = pkg_resources.get_distribution('sensormotion').version
+version = __version__
 # The full version, including alpha/beta/rc tags.
 release = version
 
