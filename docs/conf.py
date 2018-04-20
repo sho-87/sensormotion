@@ -19,20 +19,26 @@
 #
 import os
 import sys
-from sensormotion import __version__
 sys.path.insert(0, os.path.abspath('../'))
 
 from mock import Mock as MagicMock
+
 
 class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
         return MagicMock()
 
+
 MOCK_MODULES = ['numpy', 'matplotlib', 'matplotlib.pyplot',
                 'scipy', 'scipy.linalg', 'scipy.signal']
 
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
+
+def get_version():
+    version_file = open('../VERSION')
+    return version_file.read().strip()
 
 # -- General configuration ------------------------------------------------
 
@@ -75,7 +81,7 @@ author = 'Simon Ho'
 # built documents.
 #
 # The short X.Y version.
-version = __version__
+version = get_version()
 # The full version, including alpha/beta/rc tags.
 release = version
 
