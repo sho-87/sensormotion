@@ -255,6 +255,62 @@ def magnitude_acceleration(x, y, z):
     return np.sqrt(x**2 + y**2 + z**2)
 
 
+def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
+                   fig_size=(10, 5)):
+    """
+    Rectify a signal.
+
+    Run a signal through a full or half-wave rectifier. Optionally plot the
+    resulting signal.
+
+    Parameters
+    ----------
+    signal : ndarray
+        Input signal to be rectified.
+    rectifier_type : {'full', 'half'}, optional
+        Type of rectifier to use. Full-wave rectification turns all negative
+        values into positive ones. Half-wave rectification sets all negative
+        values to zero.
+    plot : bool, optional
+        Toggle to display a plot of the rectified signal.
+    show_grid : bool, optional
+        If creating a plot, toggle to show grid lines on the figure.
+    fig_size : tuple, optional
+        If plotting, set the width and height of the resulting figure.
+
+    Returns
+    -------
+    output : ndarray
+        Rectified signal.
+    """
+
+    if rectifier_type == 'half':
+        output = signal * (signal > 0)
+    elif rectifier_type == 'full':
+        output = np.abs(signal)
+
+    if plot:
+        f, axarr = plt.subplots(2, 1, figsize=fig_size)
+
+        time = np.arange(len(signal))
+
+        axarr[0].plot(time, signal)
+        axarr[0].set_title('Original')
+        axarr[0].set_xlim(min(time), max(time))
+        axarr[0].grid(show_grid)
+
+        axarr[1].plot(time, output)
+        axarr[1].set_title('Rectified ({})'.format(rectifier_type))
+        axarr[1].set_xlim(min(time), max(time))
+        axarr[1].grid(show_grid)
+
+        f.subplots_adjust(hspace=0.5)
+        plt.suptitle('Rectified Signal', size=16)
+        plt.show()
+
+    return output
+
+
 def xcorr(x, y, scale='none', plot=False, show_grid=True, fig_size=(10, 5)):
     """
     Cross-correlation between two 1D signals.
