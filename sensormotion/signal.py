@@ -229,32 +229,6 @@ def filter_signal(b, a, signal):
     return filtfilt(b, a, signal)
 
 
-def magnitude_acceleration(x, y, z):
-    """
-    Calculate magnitude of acceleration.
-
-    Given acceleration across 3 axes, calculate the magnitude of total
-    acceleration. Uses the Pythagorean theorem to calculate total acceleration
-    at each timepoint.
-
-    Parameters
-    ----------
-    x : ndarray
-        Acceleration in the X axis.
-    y : ndarray
-        Acceleration in the Y axis.
-    z : ndarray
-        Acceleration in the Z axis.
-
-    Returns
-    -------
-    mag_acc : ndarray
-        Magnitude of total acceleration (across input axes) at each time point.
-    """
-
-    return np.sqrt(x**2 + y**2 + z**2)
-
-
 def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
                    fig_size=(10, 5)):
     """
@@ -309,6 +283,33 @@ def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
         plt.show()
 
     return output
+
+
+def vector_magnitude(*args):
+    """
+    Calculate the vector magnitude/euclidean norm of multiple vectors.
+
+    Given an arbitrary number of input vectors, calculate the vector
+    magnitude/euclidean norm using the Pythagorean theorem.
+
+    Parameters
+    ----------
+    *args : ndarray
+        Each parameter is a numpy array representing a single vector. Multiple
+        vectors can be passed in, for example, `vector_magnitude(x, y, z)`
+
+    Returns
+    -------
+    vm : ndarray
+        Vector magnitude across all input vectors.
+    """
+
+    n = len(args[0])
+    assert all(len(x) == n for x in args), "Vectors have different lengths"
+
+    vm = np.sqrt(sum(x**2 for x in args))
+
+    return vm
 
 
 def xcorr(x, y, scale='none', plot=False, show_grid=True, fig_size=(10, 5)):
