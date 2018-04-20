@@ -171,7 +171,9 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'sensormotion.tex', project + ' Documentation',
+    (master_doc, 'index.tex', project + ' Documentation',
+     author, 'howto'),
+    ('sensormotion', 'sensormotion.tex', project + ' Documentation',
      author, 'howto'),
 ]
 
