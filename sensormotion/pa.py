@@ -199,6 +199,10 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
                 category.append(intensity)
                 break
 
+    # count time spent
+    category_unique, category_count = np.unique(category, return_counts=True)
+    time_spent = np.asarray((category_unique, category_count))
+
     # plot counts with intensity categories
     if plot:
         boundaries = [(item, cur_set[item][0]) for item in cur_set]
@@ -219,4 +223,4 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
         plt.ylabel('PA count')
         plt.show()
 
-    return category
+    return category, time_spent
