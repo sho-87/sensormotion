@@ -153,13 +153,15 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
     Parameters
     ----------
     x : ndarray
-        Vector of counts calculated by :func:`sensormotion.pa.convert_counts`.
-        This can either be from a single axis, or a vector magnitude. Set the
-        `n_axis` parameter accordingly.
-    set_name : {'butte_preschoolers', 'freedson_adult', 'freedson_children',
-                'keadle_women'}
-        The name of the cut-point set to use. These are listed in the
-        Actigraph FAQ, and the corresponding research article is shown below:
+        Vector of counts calculated by :func:`sensormotion.pa.convert_counts`
+        or vector magnitude from :func:`sensormotion.signal.vector_magnitude`.
+        This can either be from a single axis or a vector magnitude, but set
+        the `n_axis` parameter accordingly.
+    set_name : {'butte_preschoolers', 'freedson_adult', 'freedson_children', 'keadle_women'}
+        The name of the cut-point set to use.
+
+        These are listed in the Actigraph FAQ, and the corresponding research
+        article is shown below:
 
         `butte_preschoolers`: Butte et al. (2013) - Prediction of Energy
         Expenditure and Physical Activity in Preschoolers
@@ -190,8 +192,8 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
     Returns
     -------
     category : list
-        List of intensity categories for each epoch of PA as determined by the
-        cut-point set thresholds.
+        List of intensity categories for each epoch of PA, as determined by
+        the cut-point set thresholds.
     time_spent : ndarray
         Amount of time (counts) spent at each PA intensity level.
     """
