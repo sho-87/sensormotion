@@ -150,6 +150,11 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
     summary can be found in the Actigraph FAQ:
     https://actigraph.desk.com/customer/en/portal/articles/2515803-what-s-the-difference-among-the-cut-points-available-in-actilife
 
+    **Important**: The cut-point sets used here assume each count epoch is 60
+    seconds long. If you're using counts from
+    :func:`sensormotion.pa.convert_counts` make sure you had set the value of
+    epoch to 60. Don't use this function if you use different length epochs.
+
     Parameters
     ----------
     x : ndarray
