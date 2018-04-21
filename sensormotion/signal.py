@@ -229,30 +229,83 @@ def filter_signal(b, a, signal):
     return filtfilt(b, a, signal)
 
 
-def magnitude_acceleration(x, y, z):
+def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
+                   fig_size=(10, 5)):
     """
-    Calculate magnitude of acceleration.
+    Rectify a signal.
 
-    Given acceleration across 3 axes, calculate the magnitude of total
-    acceleration. Uses the Pythagorean theorem to calculate total acceleration
-    at each timepoint.
+    Run a signal through a full or half-wave rectifier. Optionally plot the
+    resulting signal.
 
     Parameters
     ----------
-    x : ndarray
-        Acceleration in the X axis.
-    y : ndarray
-        Acceleration in the Y axis.
-    z : ndarray
-        Acceleration in the Z axis.
+    signal : ndarray
+        Input signal to be rectified.
+    rectifier_type : {'full', 'half'}, optional
+        Type of rectifier to use. Full-wave rectification turns all negative
+        values into positive ones. Half-wave rectification sets all negative
+        values to zero.
+    plot : bool, optional
+        Toggle to display a plot of the rectified signal.
+    show_grid : bool, optional
+        If creating a plot, toggle to show grid lines on the figure.
+    fig_size : tuple, optional
+        If plotting, set the width and height of the resulting figure.
 
     Returns
     -------
-    mag_acc : ndarray
-        Magnitude of total acceleration (across input axes) at each time point.
+    output : ndarray
+        Rectified signal.
     """
 
-    return np.sqrt(x**2 + y**2 + z**2)
+    if rectifier_type == 'half':
+        output = signal * (signal > 0)
+    elif rectifier_type == 'full':
+        output = np.abs(signal)
+
+    if plot:
+        f, ax = plt.subplots(1, 1, figsize=fig_size)
+
+        time = np.arange(len(signal))
+
+        ax.plot(time, signal, color='k', linewidth=1, alpha=0.5,
+                label='Original')
+        ax.plot(time, output, color='r', linewidth=0.9, label='Rectified')
+        ax.set_xlim(min(time), max(time))
+        ax.grid(show_grid)
+        ax.legend()
+
+        plt.suptitle('Rectified Signal ({})'.format(rectifier_type), size=16)
+        plt.show()
+
+    return output
+
+
+def vector_magnitude(*args):
+    """
+    Calculate the vector magnitude/euclidean norm of multiple vectors.
+
+    Given an arbitrary number of input vectors, calculate the vector
+    magnitude/euclidean norm using the Pythagorean theorem.
+
+    Parameters
+    ----------
+    *args : ndarray
+        Each parameter is a numpy array representing a single vector. Multiple
+        vectors can be passed in, for example, `vector_magnitude(x, y, z)`
+
+    Returns
+    -------
+    vm : ndarray
+        Vector magnitude across all input vectors.
+    """
+
+    n = len(args[0])
+    assert all(len(x) == n for x in args), "Vectors have different lengths"
+
+    vm = np.sqrt(sum(x**2 for x in args))
+
+    return vm
 
 
 def xcorr(x, y, scale='none', plot=False, show_grid=True, fig_size=(10, 5)):
