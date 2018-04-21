@@ -31,7 +31,7 @@ class Mock(MagicMock):
 
 
 MOCK_MODULES = ['numpy', 'matplotlib', 'matplotlib.pyplot',
-                'scipy', 'scipy.linalg', 'scipy.signal']
+                'scipy', 'scipy.integrate', 'scipy.linalg', 'scipy.signal']
 
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
