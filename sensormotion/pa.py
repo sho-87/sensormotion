@@ -33,6 +33,9 @@ def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
     for each time window (epoch). The area under the curve for each epoch is
     the physical activity count for that time period.
 
+    Linearly interpolated values are used if exact multiples of `epoch` are
+    not found in the time signal.
+
     Parameters
     ----------
     x : ndarray
@@ -124,7 +127,7 @@ def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
     if plot:
         f, ax = plt.subplots(1, 1, figsize=fig_size)
 
-        ax.bar(boundary_times[1:], counts, width=epoch-1)
+        ax.bar(boundary_times[1:], counts, width=epoch-5)
 
         plt.xticks(boundary_times[1:],
                    ['{} - {}'.format(boundary_times[i], boundary_times[i+1])
@@ -275,6 +278,8 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
                 plt.axhline(line[1], linewidth=1, linestyle='--', color='k')
                 t = plt.text(0.4, line[1], line[0], backgroundcolor='w')
                 t.set_bbox(dict(facecolor='w', edgecolor='k'))
+
+        plt.xticks(range(1, len(x)+1))
 
         plt.suptitle('Physical activity counts and intensity', size=16)
         plt.xlabel('Epoch (length: 60 seconds)')
