@@ -13,8 +13,8 @@ For a triaxial accelerometer, an additional step is required. Each axis
 should first be passed into :func:`sensormotion.pa.convert_counts` separately,
 then the 3 count vectors should be passed into
 :func:`sensormotion.signal.vector_magnitude` to calculate vector
-magnitude (VM) of the counts. Finally, VM should be categorized using
-:func:`sensormotion.pa.cut_points`.
+magnitude (VM) of the counts. Finally, the single VM vector should be
+categorized using :func:`sensormotion.pa.cut_points`.
 """
 
 import matplotlib.pyplot as plt
@@ -143,9 +143,60 @@ def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
 
 def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
     """
-    assumes epochs are 60s
+    Categorize physical activity (PA) counts into intensity categories.
+
+    Use a pre-specified cut-point set to determine the intensity level of each
+    epoch of PA. Cut-point sets are from published research articles, and a
+    summary can be found in the Actigraph FAQ:
+    https://actigraph.desk.com/customer/en/portal/articles/2515803-what-s-the-difference-among-the-cut-points-available-in-actilife
+
+    Parameters
+    ----------
+    x : ndarray
+        Vector of counts calculated by :func:`sensormotion.pa.convert_counts`.
+        This can either be from a single axis, or a vector magnitude. Set the
+        `n_axis` parameter accordingly.
+    set_name : {'butte_preschoolers', 'freedson_adult', 'freedson_children',
+                'keadle_women'}
+        The name of the cut-point set to use. These are listed in the
+        Actigraph FAQ, and the corresponding research article is shown below:
+
+        `butte_preschoolers`: Butte et al. (2013) - Prediction of Energy
+        Expenditure and Physical Activity in Preschoolers
+
+        `freedson_adult` (uniaxial): Freedson et al. (1998) - Calibration of
+        the Computer Science and Applications, Inc. accelerometer
+
+        `freedson_adult` (triaxial): Freedson et al. (2011) - Validation and
+        Comparison of ActiGraph Activity Monitors
+
+        `freedson_children`: Freedson et al. (2005) - Calibration of
+        accelerometer output for children
+
+        `keadle_women`: Keadle et al. (2014) - Impact of accelerometer data
+        processing decisions on the sample size, wear time and physical
+        activity level of a large cohort study
+    n_axis : {1, 3}
+        Number of axes over which acceleration was recorded (1 = uniaxial,
+        3 = triaxial accelerometer). This is used to determine the cut-point
+        set values to use as some sets are for counts over a single axis,
+        whereas others are thresholds for vector magnitude (calculated from
+        3 axes).
+    plot : bool, optional
+        Toggle to display a plot of PA counts with category thresholds marked.
+    fig_size : tuple, optional
+        If plotting, set the width and height of the resulting figure.
+
+    Returns
+    -------
+    category : list
+        List of intensity categories for each epoch of PA as determined by the
+        cut-point set thresholds.
+    time_spent : ndarray
+        Amount of time (counts) spent at each PA intensity level.
     """
 
+    # new cut-point sets should be added to this dictionary
     sets = {'butte_preschoolers': {1: {'sedentary': [-np.inf, 239],
                                        'light'    : [240, 2119],
                                        'moderate' : [2120, 4449],
