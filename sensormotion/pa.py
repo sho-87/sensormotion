@@ -4,6 +4,17 @@ Calculate physical activity (PA) levels with conversion to activity counts.
 Functions for converting raw sensor data to physical activity (PA) or
 moderate-to-vigorous physical activity (MVPA) counts, similar to those given
 by dedicated accelerometers such as Actigraph devices.
+
+For a uniaxial accelerometer, the signal should first be passed into
+:func:`sensormotion.pa.convert_counts`, then the counts should categorized
+using :func:`sensormotion.pa.cut_points`.
+
+For a triaxial accelerometer, an additional step is required. Each axis
+should first be passed into :func:`sensormotion.pa.convert_counts` separately,
+then the 3 count vectors should be passed into
+:func:`sensormotion.signal.vector_magnitude` to calculate vector
+magnitude (VM) of the counts. Finally, VM should be categorized using
+:func:`sensormotion.pa.cut_points`.
 """
 
 import matplotlib.pyplot as plt
@@ -33,7 +44,10 @@ def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
         milliseconds (ms).
     epoch : int, optional
         The duration of each time window in seconds. Counts will be calculated
-        over this period. PA counts are usually measured over 60 second epochs.
+        over this period. PA counts are usually measured over 60 second
+        epochs. :func:`sensormotion.pa.cut_points` also requires 60 second
+        epochs, however, if you're using your own cut point set and just want
+        raw count values feel free to use any sized epoch.
     rectify : {'full', 'half'}, optional
         Type of rectifier to use on the input acceleration signal. This is to
         ensure that PA counts take into consideration negative acceleration
@@ -125,3 +139,84 @@ def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
         plt.show()
 
     return counts
+
+
+def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
+    """
+    assumes epochs are 60s
+    """
+
+    sets = {'butte_preschoolers': {1: {'sedentary': [-np.inf, 239],
+                                       'light'    : [240, 2119],
+                                       'moderate' : [2120, 4449],
+                                       'vigorous' : [4450, np.inf]},
+                                   3: {'sedentary': [-np.inf, 819],
+                                       'light'    : [820, 3907],
+                                       'moderate' : [3908, 6111],
+                                       'vigorous' : [6112, np.inf]}
+                                   },
+            'freedson_adult'    : {1: {'sedentary'    : [-np.inf, 99],
+                                       'light'        : [100, 1951],
+                                       'moderate'     : [1952, 5724],
+                                       'vigorous'     : [5725, 9498],
+                                       'very vigorous': [9499, np.inf]},
+                                   3: {'light'        : [-np.inf, 2690],
+                                       'moderate'     : [2691, 6166],
+                                       'vigorous'     : [6167, 9642],
+                                       'very vigorous': [9643, np.inf]}
+                                   },
+            'freedson_children' : {1: {'sedentary'    : [-np.inf, 149],
+                                       'light'        : [150, 499],
+                                       'moderate'     : [500, 3999],
+                                       'vigorous'     : [4000, 7599],
+                                       'very vigorous': [7600, np.inf]}
+                                   },
+            'keadle_women'      : {1: {'sedentary': [-np.inf, 99],
+                                       'light'    : [100, 1951],
+                                       'moderate' : [1952, np.inf]},
+                                   3: {'sedentary': [-np.inf, 199],
+                                       'light'    : [200, 2689],
+                                       'moderate' : [2690, np.inf]}
+                                   }
+            }
+
+    try:
+        cur_set = sets[set_name][n_axis]
+        print('Cut-point set: {} (axis count: {})...'.format(set_name, n_axis))
+
+        for i in cur_set:
+            print('{}: {} to {}'.format(i, cur_set[i][0], cur_set[i][1]))
+    except KeyError:
+        print('Error: cut-point set not found. Make sure the set name and/or '
+              'number of axes are correct')
+        raise
+
+    # categorize counts
+    category = []
+    for count in x:
+        for intensity in cur_set:
+            if cur_set[intensity][0] <= count <= cur_set[intensity][1]:
+                category.append(intensity)
+                break
+
+    # plot counts with intensity categories
+    if plot:
+        boundaries = [(item, cur_set[item][0]) for item in cur_set]
+        boundaries.sort(key=lambda x: x[1])
+
+        f, ax = plt.subplots(1, 1, figsize=fig_size)
+
+        ax.bar(range(1, len(x)+1), x)
+
+        for line in boundaries[1:]:
+            if line[1] < max(x):
+                plt.axhline(line[1], linewidth=1, linestyle='--', color='k')
+                t = plt.text(0.4, line[1], line[0], backgroundcolor='w')
+                t.set_bbox(dict(facecolor='w', edgecolor='k'))
+
+        plt.suptitle('Physical activity counts and intensity', size=16)
+        plt.xlabel('Epoch (length: 60 seconds)')
+        plt.ylabel('PA count')
+        plt.show()
+
+    return category
