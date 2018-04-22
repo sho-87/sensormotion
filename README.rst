@@ -3,6 +3,18 @@
 Sensor Motion
 =============
 
+.. image:: https://img.shields.io/pypi/pyversions/sensormotion.svg
+   :alt: PyPI - Python Version
+   :target: https://pypi.org/project/sensormotion/
+
+.. image:: https://img.shields.io/pypi/v/sensormotion.svg
+   :alt: PyPI
+   :target: https://pypi.org/project/sensormotion/
+
+.. image:: https://img.shields.io/github/issues/sho-87/sensormotion.svg
+   :alt: GitHub issues
+   :target: https://github.com/sho-87/sensormotion/issues
+
 .. image:: https://readthedocs.org/projects/sensormotion/badge/?version=latest
    :target: http://sensormotion.readthedocs.io
 
