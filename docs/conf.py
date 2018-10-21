@@ -40,7 +40,7 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 def get_version():
     with open('../sensormotion/version.py') as f:
         p = re.compile(r"'.*'$")
-        return p.match(f.read().strip())
+        return re.findall(p, f.read().strip())[0]
 
 # -- General configuration ------------------------------------------------
 
