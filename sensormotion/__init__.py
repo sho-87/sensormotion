@@ -51,3 +51,4 @@ import sensormotion.peak
 import sensormotion.plot
 import sensormotion.signal
 import sensormotion.utils
+from .version import __version__
