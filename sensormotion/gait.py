@@ -123,6 +123,11 @@ def step_regularity(autocorr_peak_values):
     """
 
     peaks_half = autocorr_peak_values[autocorr_peak_values.size//2:]
+
+    assert len(peaks_half) >= 3, \
+    'Not enough autocorrelation peaks detected. Plot the ' \
+    'autocorrelation signal to visually inspect peaks'
+
     ac_lag0 = peaks_half[0]  # autocorrelation value at lag 0
     ac_d1 = peaks_half[1]  # first dominant period i.e. a step (left-right)
     ac_d2 = peaks_half[2]  # second dominant period i.e. a stride (left-left)
@@ -171,6 +176,11 @@ def step_symmetry(autocorr_peak_values):
     """
 
     peaks_half = autocorr_peak_values[autocorr_peak_values.size//2:]
+
+    assert len(peaks_half) >= 3, \
+    'Not enough autocorrelation peaks detected. Plot the ' \
+    'autocorrelation signal to visually inspect peaks'
+
     ac_d1 = peaks_half[1]  # first dominant period i.e. a step (left-right)
     ac_d2 = peaks_half[2]  # second dominant period i.e. a stride (left-left)
 
