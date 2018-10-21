@@ -1,18 +1,16 @@
 from setuptools import setup, find_packages
-
-
-def get_version():
-    version_file = open('VERSION')
-    return version_file.read().strip()
-
+from distutils.util import convert_path
 
 def readme():
     with open('README.rst') as f:
         return f.read()
 
+meta = {}
+with open(convert_path('sensormotion/version.py')) as f:
+    exec(f.read(), meta)
 
 setup(name='sensormotion',
-      version=get_version(),
+      version=meta['__version__'],
       description='Python package for analyzing sensor-collected human motion '
                   'data (e.g. physical activity levels, gait dynamics)',
       long_description=readme(),
