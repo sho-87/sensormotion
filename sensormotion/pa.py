@@ -24,8 +24,16 @@ import sensormotion.signal
 from scipy.integrate import simps, trapz
 
 
-def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
-                   integrate='simpson', plot=False, fig_size=(10, 5)):
+def convert_counts(
+    x,
+    time,
+    time_scale="ms",
+    epoch=60,
+    rectify="full",
+    integrate="simpson",
+    plot=False,
+    fig_size=(10, 5),
+):
     """
     Convert acceleration to physical activity (PA) counts.
 
@@ -70,31 +78,32 @@ def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
         PA count values for each epoch.
     """
 
-    assert len(x) == len(time), 'signal and time must be the same length'
-    assert np.all(np.diff(time) > 0), 'time signal is not fully ascending'
-    assert integrate == 'simpson' or integrate == 'trapezoid', \
-        'integrate method must either be simpson or trapezoid'
+    assert len(x) == len(time), "signal and time must be the same length"
+    assert np.all(np.diff(time) > 0), "time signal is not fully ascending"
+    assert (
+        integrate == "simpson" or integrate == "trapezoid"
+    ), "integrate method must either be simpson or trapezoid"
 
     x = np.asarray(x)
     time = np.asarray(time)
 
     # convert time to seconds
-    if time_scale == 'ms':
-        time = time/1000
-    elif time_scale == 's':
+    if time_scale == "ms":
+        time = time / 1000
+    elif time_scale == "s":
         time = time
 
     # calculate time diff
     time = time - time[0]
 
-    assert max(time) > epoch, 'length of signal time shorter than epoch size'
+    assert max(time) > epoch, "length of signal time shorter than epoch size"
 
     # rectify signal
     x = sensormotion.signal.rectify_signal(x, rectify)
 
     # interpolate missing times values to get exact epochs
     boundary_count = int(max(time) / epoch) + 1
-    boundary_times = [i*epoch for i in range(boundary_count)]
+    boundary_times = [i * epoch for i in range(boundary_count)]
     missing_times = np.setdiff1d(boundary_times, time)  # epoch times to interp
 
     x = np.append(x, np.interp(missing_times, time, x))  # interpolate x values
@@ -113,32 +122,36 @@ def convert_counts(x, time, time_scale='ms', epoch=60, rectify='full',
 
     for i in range(len(counts)):
         lower = boundary_idx[i]
-        upper = boundary_idx[i+1] + 1  # upper bound should be inclusive
+        upper = boundary_idx[i + 1] + 1  # upper bound should be inclusive
 
         cur_signal = x[lower:upper]
         cur_time = time[lower:upper]
 
-        if integrate == 'simpson':
+        if integrate == "simpson":
             counts[i] = simps(cur_signal, cur_time)
-        elif integrate == 'trapezoid':
+        elif integrate == "trapezoid":
             counts[i] = trapz(cur_signal, cur_time)
 
     # plot counts
     if plot:
         f, ax = plt.subplots(1, 1, figsize=fig_size)
 
-        ax.bar(boundary_times[1:], counts, width=epoch-5)
+        ax.bar(boundary_times[1:], counts, width=epoch - 5)
 
-        plt.xticks(boundary_times[1:],
-                   ['{} - {}'.format(boundary_times[i], boundary_times[i+1])
-                    for i, x in enumerate(boundary_times[1:])])
+        plt.xticks(
+            boundary_times[1:],
+            [
+                "{} - {}".format(boundary_times[i], boundary_times[i + 1])
+                for i, x in enumerate(boundary_times[1:])
+            ],
+        )
 
         for tick in ax.get_xticklabels():
             tick.set_rotation(45)
 
-        plt.suptitle('Physical activity counts', size=16)
-        plt.xlabel('Time window (seconds)')
-        plt.ylabel('PA count')
+        plt.suptitle("Physical activity counts", size=16)
+        plt.xlabel("Time window (seconds)")
+        plt.ylabel("PA count")
         plt.show()
 
     return counts
@@ -207,49 +220,70 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
     """
 
     # new cut-point sets should be added to this dictionary
-    sets = {'butte_preschoolers': {1: {'sedentary': [-np.inf, 239],
-                                       'light'    : [240, 2119],
-                                       'moderate' : [2120, 4449],
-                                       'vigorous' : [4450, np.inf]},
-                                   3: {'sedentary': [-np.inf, 819],
-                                       'light'    : [820, 3907],
-                                       'moderate' : [3908, 6111],
-                                       'vigorous' : [6112, np.inf]}
-                                   },
-            'freedson_adult'    : {1: {'sedentary'    : [-np.inf, 99],
-                                       'light'        : [100, 1951],
-                                       'moderate'     : [1952, 5724],
-                                       'vigorous'     : [5725, 9498],
-                                       'very vigorous': [9499, np.inf]},
-                                   3: {'light'        : [-np.inf, 2690],
-                                       'moderate'     : [2691, 6166],
-                                       'vigorous'     : [6167, 9642],
-                                       'very vigorous': [9643, np.inf]}
-                                   },
-            'freedson_children' : {1: {'sedentary'    : [-np.inf, 149],
-                                       'light'        : [150, 499],
-                                       'moderate'     : [500, 3999],
-                                       'vigorous'     : [4000, 7599],
-                                       'very vigorous': [7600, np.inf]}
-                                   },
-            'keadle_women'      : {1: {'sedentary': [-np.inf, 99],
-                                       'light'    : [100, 1951],
-                                       'moderate' : [1952, np.inf]},
-                                   3: {'sedentary': [-np.inf, 199],
-                                       'light'    : [200, 2689],
-                                       'moderate' : [2690, np.inf]}
-                                   }
+    sets = {
+        "butte_preschoolers": {
+            1: {
+                "sedentary": [-np.inf, 239],
+                "light": [240, 2119],
+                "moderate": [2120, 4449],
+                "vigorous": [4450, np.inf],
+            },
+            3: {
+                "sedentary": [-np.inf, 819],
+                "light": [820, 3907],
+                "moderate": [3908, 6111],
+                "vigorous": [6112, np.inf],
+            },
+        },
+        "freedson_adult": {
+            1: {
+                "sedentary": [-np.inf, 99],
+                "light": [100, 1951],
+                "moderate": [1952, 5724],
+                "vigorous": [5725, 9498],
+                "very vigorous": [9499, np.inf],
+            },
+            3: {
+                "light": [-np.inf, 2690],
+                "moderate": [2691, 6166],
+                "vigorous": [6167, 9642],
+                "very vigorous": [9643, np.inf],
+            },
+        },
+        "freedson_children": {
+            1: {
+                "sedentary": [-np.inf, 149],
+                "light": [150, 499],
+                "moderate": [500, 3999],
+                "vigorous": [4000, 7599],
+                "very vigorous": [7600, np.inf],
             }
+        },
+        "keadle_women": {
+            1: {
+                "sedentary": [-np.inf, 99],
+                "light": [100, 1951],
+                "moderate": [1952, np.inf],
+            },
+            3: {
+                "sedentary": [-np.inf, 199],
+                "light": [200, 2689],
+                "moderate": [2690, np.inf],
+            },
+        },
+    }
 
     try:
         cur_set = sets[set_name][n_axis]
-        print('Cut-point set: {} (axis count: {})...'.format(set_name, n_axis))
+        print("Cut-point set: {} (axis count: {})...".format(set_name, n_axis))
 
         for i in cur_set:
-            print('{}: {} to {}'.format(i, cur_set[i][0], cur_set[i][1]))
+            print("{}: {} to {}".format(i, cur_set[i][0], cur_set[i][1]))
     except KeyError:
-        print('Error: cut-point set not found. Make sure the set name and/or '
-              'number of axes are correct')
+        print(
+            "Error: cut-point set not found. Make sure the set name and/or "
+            "number of axes are correct"
+        )
         raise
 
     # categorize counts
@@ -271,19 +305,19 @@ def cut_points(x, set_name, n_axis, plot=False, fig_size=(10, 5)):
 
         f, ax = plt.subplots(1, 1, figsize=fig_size)
 
-        ax.bar(range(1, len(x)+1), x)
+        ax.bar(range(1, len(x) + 1), x)
 
         for line in boundaries[1:]:
             if line[1] < max(x):
-                plt.axhline(line[1], linewidth=1, linestyle='--', color='k')
-                t = plt.text(0.4, line[1], line[0], backgroundcolor='w')
-                t.set_bbox(dict(facecolor='w', edgecolor='k'))
+                plt.axhline(line[1], linewidth=1, linestyle="--", color="k")
+                t = plt.text(0.4, line[1], line[0], backgroundcolor="w")
+                t.set_bbox(dict(facecolor="w", edgecolor="k"))
 
-        plt.xticks(range(1, len(x)+1))
+        plt.xticks(range(1, len(x) + 1))
 
-        plt.suptitle('Physical activity counts and intensity', size=16)
-        plt.xlabel('Epoch (length: 60 seconds)')
-        plt.ylabel('PA count')
+        plt.suptitle("Physical activity counts and intensity", size=16)
+        plt.xlabel("Epoch (length: 60 seconds)")
+        plt.ylabel("PA count")
         plt.show()
 
     return category, time_spent

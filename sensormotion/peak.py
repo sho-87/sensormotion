@@ -16,8 +16,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def find_peaks(time, signal, peak_type='peak', min_val=0.5, min_dist=25,
-               detrend=0, plot=False, show_grid=True, fig_size=(10, 5)):
+def find_peaks(
+    time,
+    signal,
+    peak_type="peak",
+    min_val=0.5,
+    min_dist=25,
+    detrend=0,
+    plot=False,
+    show_grid=True,
+    fig_size=(10, 5),
+):
     """
     Find peaks in a signal.
 
@@ -76,48 +85,59 @@ def find_peaks(time, signal, peak_type='peak', min_val=0.5, min_dist=25,
         new_signal = sensormotion.signal.detrend_signal(signal, detrend)
 
     # Check peak type
-    if peak_type == 'peak':
+    if peak_type == "peak":
         # Original input signal
         peaks = indexes(new_signal, thres=min_val, min_dist=min_dist)
-    elif peak_type == 'valley':
+    elif peak_type == "valley":
         # Flip the input signal for valleys
-        peaks = indexes(-new_signal, thres=min_val, min_dist=min_dist)
-    elif peak_type == 'both':
+        peaks = indexes(np.negative(new_signal), thres=min_val, min_dist=min_dist)
+    elif peak_type == "both":
         peaks = indexes(new_signal, thres=min_val, min_dist=min_dist)
-        valleys = indexes(-new_signal, thres=min_val, min_dist=min_dist)
+        valleys = indexes(np.negative(new_signal), thres=min_val, min_dist=min_dist)
         peaks = np.sort(np.append(peaks, valleys))
 
     if plot:
         if detrend == 0:
             f, axarr = plt.subplots(1, 1, figsize=fig_size)
-            axarr.plot(time, signal, 'k')
-            axarr.plot(time[peaks], signal[peaks], 'r+', ms=15, mew=2,
-                       label='{} peaks'.format(len(peaks)))
+            axarr.plot(time, signal, "k")
+            axarr.plot(
+                time[peaks],
+                signal[peaks],
+                "r+",
+                ms=15,
+                mew=2,
+                label="{} peaks".format(len(peaks)),
+            )
             axarr.set_xlim(min(time), max(time))
-            axarr.set_xlabel('Time')
+            axarr.set_xlabel("Time")
             axarr.grid(show_grid)
-            axarr.legend(loc='lower right')
+            axarr.legend(loc="lower right")
         else:
             f, axarr = plt.subplots(2, 1, figsize=fig_size)
-            axarr[0].plot(time, signal, 'k')
-            axarr[0].title.set_text('Original')
+            axarr[0].plot(time, signal, "k")
+            axarr[0].title.set_text("Original")
             axarr[0].set_xlim(min(time), max(time))
-            axarr[0].set_xlabel('Time')
+            axarr[0].set_xlabel("Time")
             axarr[0].grid(show_grid)
 
-            axarr[1].plot(time, new_signal, 'k')
-            axarr[1].plot(time[peaks], new_signal[peaks], 'r+', ms=15, mew=2,
-                          label='{} peaks'.format(len(peaks)))
-            axarr[1].title.set_text('Detrended (degree: {})'.format(detrend))
+            axarr[1].plot(time, new_signal, "k")
+            axarr[1].plot(
+                time[peaks],
+                new_signal[peaks],
+                "r+",
+                ms=15,
+                mew=2,
+                label="{} peaks".format(len(peaks)),
+            )
+            axarr[1].title.set_text("Detrended (degree: {})".format(detrend))
             axarr[1].set_xlim(min(time), max(time))
-            axarr[1].set_xlabel('Time')
+            axarr[1].set_xlabel("Time")
             axarr[1].grid(show_grid)
-            axarr[1].legend(loc='lower right')
+            axarr[1].legend(loc="lower right")
 
         f.subplots_adjust(hspace=0.5)
-        suptitle_string = 'Peak Detection (val: {}, dist: {})'
-        plt.suptitle(suptitle_string.format(min_val, min_dist),
-                     y=1.01, size=16)
+        suptitle_string = "Peak Detection (val: {}, dist: {})"
+        plt.suptitle(suptitle_string.format(min_val, min_dist), y=1.01, size=16)
         plt.show()
 
     if detrend == 0:
@@ -151,8 +171,7 @@ def indexes(y, thres=0.3, min_dist=1):
         Array containing the numeric indexes of the peaks that were detected
     """
 
-    if isinstance(y, np.ndarray) and np.issubdtype(y.dtype,
-                                                   np.unsignedinteger):
+    if isinstance(y, np.ndarray) and np.issubdtype(y.dtype, np.unsignedinteger):
         raise ValueError("y must be signed")
 
     thres = thres * (np.max(y) - np.min(y)) + np.min(y)
@@ -172,8 +191,8 @@ def indexes(y, thres=0.3, min_dist=1):
     while len(zeros):
         # add pixels 2 by 2 to propagate left and right value onto the
         # zero-value pixel
-        zerosr = np.hstack([dy[1:], 0.])
-        zerosl = np.hstack([0., dy[:-1]])
+        zerosr = np.hstack([dy[1:], 0.0])
+        zerosl = np.hstack([0.0, dy[:-1]])
 
         # replace 0 with right value if non zero
         dy[zeros] = zerosr[zeros]
@@ -184,9 +203,9 @@ def indexes(y, thres=0.3, min_dist=1):
         zeros, = np.where(dy == 0)
 
     # find the peaks by using the first order difference
-    peaks = np.where((np.hstack([dy, 0.]) < 0.)
-                     & (np.hstack([0., dy]) > 0.)
-                     & (y > thres))[0]
+    peaks = np.where(
+        (np.hstack([dy, 0.0]) < 0.0) & (np.hstack([0.0, dy]) > 0.0) & (y > thres)
+    )[0]
 
     # handle multiple peaks, respecting the minimum distance
     if peaks.size > 1 and min_dist > 1:

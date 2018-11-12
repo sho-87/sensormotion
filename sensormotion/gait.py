@@ -10,7 +10,7 @@ from __future__ import print_function, division
 import numpy as np
 
 
-def cadence(time, peak_times, time_units='ms'):
+def cadence(time, peak_times, time_units="ms"):
     """
     Calculate cadence of the current signal.
 
@@ -43,10 +43,10 @@ def cadence(time, peak_times, time_units='ms'):
     n = step_count(peak_times)
 
     # Convert duration to seconds
-    if time_units == 'ms':
+    if time_units == "ms":
         duration = (time.max() - time.min()) / 1000
-    elif time_units == 's':
-        duration = (time.max() - time.min())
+    elif time_units == "s":
+        duration = time.max() - time.min()
 
     steps_per_min = (n / duration) * 60
 
@@ -122,11 +122,12 @@ def step_regularity(autocorr_peak_values):
         Stride regularity. Capped at 1.0 for both vertical and lateral axes.
     """
 
-    peaks_half = autocorr_peak_values[autocorr_peak_values.size//2:]
+    peaks_half = autocorr_peak_values[autocorr_peak_values.size // 2 :]
 
-    assert len(peaks_half) >= 3, \
-    'Not enough autocorrelation peaks detected. Plot the ' \
-    'autocorrelation signal to visually inspect peaks'
+    assert len(peaks_half) >= 3, (
+        "Not enough autocorrelation peaks detected. Plot the "
+        "autocorrelation signal to visually inspect peaks"
+    )
 
     ac_lag0 = peaks_half[0]  # autocorrelation value at lag 0
     ac_d1 = peaks_half[1]  # first dominant period i.e. a step (left-right)
@@ -175,11 +176,12 @@ def step_symmetry(autocorr_peak_values):
         axis of interest.
     """
 
-    peaks_half = autocorr_peak_values[autocorr_peak_values.size//2:]
+    peaks_half = autocorr_peak_values[autocorr_peak_values.size // 2 :]
 
-    assert len(peaks_half) >= 3, \
-    'Not enough autocorrelation peaks detected. Plot the ' \
-    'autocorrelation signal to visually inspect peaks'
+    assert len(peaks_half) >= 3, (
+        "Not enough autocorrelation peaks detected. Plot the "
+        "autocorrelation signal to visually inspect peaks"
+    )
 
     ac_d1 = peaks_half[1]  # first dominant period i.e. a step (left-right)
     ac_d2 = peaks_half[2]  # second dominant period i.e. a stride (left-left)
