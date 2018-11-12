@@ -59,8 +59,8 @@ def baseline(y, deg=None, max_it=None, tol=None):
     coeffs = np.ones(order)
 
     # try to avoid numerical issues
-    cond = math.pow(y.max(), 1. / order)
-    x = np.linspace(0., cond, y.size)
+    cond = math.pow(y.max(), 1.0 / order)
+    x = np.linspace(0.0, cond, y.size)
     base = y.copy()
 
     vander = np.vander(x, order)
@@ -112,7 +112,7 @@ def build_filter(frequency, sample_rate, filter_type, filter_order):
 
     nyq = 0.5 * sample_rate
 
-    if filter_type == 'bandpass':
+    if filter_type == "bandpass":
         nyq_cutoff = (frequency[0] / nyq, frequency[1] / nyq)
     else:
         nyq_cutoff = frequency / nyq
@@ -178,7 +178,7 @@ def fft(signal, sampling_rate, plot=False, show_grid=True, fig_size=(10, 5)):
     t = 1.0 / sampling_rate
     time = range(n)  # Time vector
 
-    xf = np.linspace(0.0, 1.0/(2.0*t), n//2)
+    xf = np.linspace(0.0, 1.0 / (2.0 * t), n // 2)
     yf = np.fft.fft(signal) / n  # FFT and normalize
 
     if plot:
@@ -186,17 +186,17 @@ def fft(signal, sampling_rate, plot=False, show_grid=True, fig_size=(10, 5)):
 
         axarr[0].plot(time, signal)
         axarr[0].set_xlim(min(time), max(time))
-        axarr[0].set_xlabel('Time Steps')
-        axarr[0].set_ylabel('Amplitude')
+        axarr[0].set_xlabel("Time Steps")
+        axarr[0].set_ylabel("Amplitude")
         axarr[0].grid(show_grid)
 
-        axarr[1].plot(xf, abs(yf[0:n//2]), 'r')  # Plot the spectrum
-        axarr[1].set_xlabel('Freq (Hz)')
-        axarr[1].set_ylabel('|Y(freq)|')
+        axarr[1].plot(xf, abs(yf[0 : n // 2]), "r")  # Plot the spectrum
+        axarr[1].set_xlabel("Freq (Hz)")
+        axarr[1].set_ylabel("|Y(freq)|")
         axarr[1].grid(show_grid)
 
         f.subplots_adjust(hspace=0.5)
-        plt.suptitle('Power Spectrum', size=16)
+        plt.suptitle("Power Spectrum", size=16)
         plt.show()
 
     return yf
@@ -229,8 +229,9 @@ def filter_signal(b, a, signal):
     return filtfilt(b, a, signal)
 
 
-def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
-                   fig_size=(10, 5)):
+def rectify_signal(
+    signal, rectifier_type="full", plot=False, show_grid=True, fig_size=(10, 5)
+):
     """
     Rectify a signal.
 
@@ -258,9 +259,9 @@ def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
         Rectified signal.
     """
 
-    if rectifier_type == 'half':
+    if rectifier_type == "half":
         output = signal * (signal > 0)
-    elif rectifier_type == 'full':
+    elif rectifier_type == "full":
         output = np.abs(signal)
 
     if plot:
@@ -268,14 +269,13 @@ def rectify_signal(signal, rectifier_type='full', plot=False, show_grid=True,
 
         time = np.arange(len(signal))
 
-        ax.plot(time, signal, color='k', linewidth=1, alpha=0.5,
-                label='Original')
-        ax.plot(time, output, color='r', linewidth=0.9, label='Rectified')
+        ax.plot(time, signal, color="k", linewidth=1, alpha=0.5, label="Original")
+        ax.plot(time, output, color="r", linewidth=0.9, label="Rectified")
         ax.set_xlim(min(time), max(time))
         ax.grid(show_grid)
         ax.legend()
 
-        plt.suptitle('Rectified Signal ({})'.format(rectifier_type), size=16)
+        plt.suptitle("Rectified Signal ({})".format(rectifier_type), size=16)
         plt.show()
 
     return output
@@ -303,12 +303,12 @@ def vector_magnitude(*args):
     n = len(args[0])
     assert all(len(x) == n for x in args), "Vectors have different lengths"
 
-    vm = np.sqrt(sum(x**2 for x in args))
+    vm = np.sqrt(sum(x ** 2 for x in args))
 
     return vm
 
 
-def xcorr(x, y, scale='none', plot=False, show_grid=True, fig_size=(10, 5)):
+def xcorr(x, y, scale="none", plot=False, show_grid=True, fig_size=(10, 5)):
     """
     Cross-correlation between two 1D signals.
 
@@ -357,23 +357,27 @@ def xcorr(x, y, scale='none', plot=False, show_grid=True, fig_size=(10, 5)):
         pad_amount = y.size - x.size
         x = np.append(x, np.repeat(0, pad_amount))
 
-    corr = np.correlate(x, y, mode='full')
+    corr = np.correlate(x, y, mode="full")
     lags = np.arange(-(x.size - 1), x.size)
 
     # Scale the correlation values
     # Equivalent to xcorr scaling options in MATLAB
-    if scale == 'biased':
+    if scale == "biased":
         corr = corr / x.size
-    elif scale == 'unbiased':
-        corr /= (x.size - abs(lags))
-    elif scale == 'coeff':
+    elif scale == "unbiased":
+        corr /= x.size - abs(lags)
+    elif scale == "coeff":
         corr /= np.sqrt(np.dot(x, x) * np.dot(y, y))
 
     if plot:
-        sensormotion.plot.plot_signal(lags, corr,
-                                      title='Cross-correlation (scale: {})'.format(scale),
-                                      xlab='Lag', ylab='Correlation',
-                                      show_grid=show_grid,
-                                      fig_size=fig_size)
+        sensormotion.plot.plot_signal(
+            lags,
+            corr,
+            title="Cross-correlation (scale: {})".format(scale),
+            xlab="Lag",
+            ylab="Correlation",
+            show_grid=show_grid,
+            fig_size=fig_size,
+        )
 
     return corr, lags

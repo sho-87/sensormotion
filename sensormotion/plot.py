@@ -15,8 +15,14 @@ import sensormotion.signal
 from scipy.signal import freqz
 
 
-def plot_filter_response(frequency, sample_rate, filter_type, filter_order=2,
-                         show_grid=True, fig_size=(10, 5)):
+def plot_filter_response(
+    frequency,
+    sample_rate,
+    filter_type,
+    filter_order=2,
+    show_grid=True,
+    fig_size=(10, 5),
+):
     """Plot filter frequency response.
 
     Generate a plot showing the frequency response curve of a filter with the
@@ -43,33 +49,44 @@ def plot_filter_response(frequency, sample_rate, filter_type, filter_order=2,
         Tuple containing the width and height of the resulting figure.
     """
 
-    b, a = sensormotion.signal.build_filter(frequency, sample_rate,
-                                            filter_type, filter_order)
+    b, a = sensormotion.signal.build_filter(
+        frequency, sample_rate, filter_type, filter_order
+    )
 
     # Plot the frequency response
     w, h = freqz(b, a, worN=8000)
     f, axarr = plt.subplots(figsize=fig_size)
-    axarr.plot(0.5*sample_rate*w/np.pi, np.abs(h), 'b')
-    axarr.set_xlim(0, 0.5*sample_rate)
-    axarr.set_xlabel('Frequency (Hz)')
+    axarr.plot(0.5 * sample_rate * w / np.pi, np.abs(h), "b")
+    axarr.set_xlim(0, 0.5 * sample_rate)
+    axarr.set_xlabel("Frequency (Hz)")
     axarr.grid(show_grid)
 
     # Add lines and markers at the cutoff frequency/frequencies
-    if filter_type == 'bandpass':
+    if filter_type == "bandpass":
         for i in range(len(frequency)):
-            axarr.axvline(frequency[i], color='k')
-            axarr.plot(frequency[i], 0.5*np.sqrt(2), 'ko')
+            axarr.axvline(frequency[i], color="k")
+            axarr.plot(frequency[i], 0.5 * np.sqrt(2), "ko")
     else:
-        axarr.axvline(frequency, color='k')
-        axarr.plot(frequency, 0.5*np.sqrt(2), 'ko')
+        axarr.axvline(frequency, color="k")
+        axarr.plot(frequency, 0.5 * np.sqrt(2), "ko")
 
     plt.suptitle("Filter Frequency Response", size=16)
     plt.show()
 
 
-def plot_signal(time, signal, title='', xlab='', ylab='',
-                line_width=1, alpha=1, color='k',
-                subplots=False, show_grid=True, fig_size=(10, 5)):
+def plot_signal(
+    time,
+    signal,
+    title="",
+    xlab="",
+    ylab="",
+    line_width=1,
+    alpha=1,
+    color="k",
+    subplots=False,
+    show_grid=True,
+    fig_size=(10, 5),
+):
     """Plot signals over time.
 
     Convenience wrapper around pyplot to quickly create plots of signals
@@ -126,31 +143,36 @@ def plot_signal(time, signal, title='', xlab='', ylab='',
             f, axarr = plt.subplots(figsize=fig_size)
 
         for i, line in enumerate(signal):  # Iterate through each plot line
-            cur_data = line['data']
+            cur_data = line["data"]
 
             # Get options for the current line
             try:
-                cur_label = line['label']
+                cur_label = line["label"]
             except KeyError:
-                print('Warning: Label missing for signal')
-                cur_label = ''
+                print("Warning: Label missing for signal")
+                cur_label = ""
             try:
-                cur_color = line['color']
+                cur_color = line["color"]
             except KeyError:
                 cur_color = color
             try:
-                cur_alpha = line['alpha']
+                cur_alpha = line["alpha"]
             except KeyError:
                 cur_alpha = alpha
             try:
-                cur_linewidth = line['line_width']
+                cur_linewidth = line["line_width"]
             except KeyError:
                 cur_linewidth = line_width
 
             if subplots:  # Show lines in separate plots, in the same figure
-                axarr[i].plot(time, cur_data, label=cur_label,
-                              linewidth=cur_linewidth,
-                              alpha=cur_alpha, color=cur_color)
+                axarr[i].plot(
+                    time,
+                    cur_data,
+                    label=cur_label,
+                    linewidth=cur_linewidth,
+                    alpha=cur_alpha,
+                    color=cur_color,
+                )
 
                 axarr[i].set_xlim(min(time), max(time))
                 axarr[i].set_xlabel(xlab)
@@ -159,9 +181,14 @@ def plot_signal(time, signal, title='', xlab='', ylab='',
                 axarr[i].legend()
                 f.subplots_adjust(hspace=0.5)
             else:  # Show all lines on the same plot
-                axarr.plot(time, cur_data, label=cur_label,
-                           linewidth=cur_linewidth,
-                           alpha=cur_alpha, color=cur_color)
+                axarr.plot(
+                    time,
+                    cur_data,
+                    label=cur_label,
+                    linewidth=cur_linewidth,
+                    alpha=cur_alpha,
+                    color=cur_color,
+                )
 
                 axarr.set_xlim(min(time), max(time))
                 axarr.set_xlabel(xlab)
@@ -170,8 +197,7 @@ def plot_signal(time, signal, title='', xlab='', ylab='',
                 axarr.legend()
     else:  # Single line plot
         f, axarr = plt.subplots(figsize=fig_size)
-        axarr.plot(time, signal, linewidth=line_width,
-                   alpha=alpha, color=color)
+        axarr.plot(time, signal, linewidth=line_width, alpha=alpha, color=color)
         axarr.set_xlim(min(time), max(time))
         axarr.set_xlabel(xlab)
         axarr.set_ylabel(ylab)
