@@ -37,7 +37,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering",
     ],
-    keywords="gait accelerometer signal-processing walking actigraph"
-    " physical-activity",
+    keywords="gait accelerometer signal-processing walking actigraph physical-activity",
     zip_safe=True,
 )
