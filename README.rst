@@ -98,6 +98,8 @@ filter:
 
     x_filtered = sm.signal.filter_signal(b, a, signal=x)
 
+.. image:: images/filter.png
+
 Next, we can detect the peaks (or valleys) in the filtered signal, which
 gives us the time and value of each detection. Optionally, we can
 include a plot of the signal and detected peaks/valleys:
@@ -109,6 +111,8 @@ include a plot of the signal and detected peaks/valleys:
                                                  min_val=0.6, min_dist=30,
                                                  plot=True)
 
+.. image:: images/peak_detection.png
+
 From the detected peaks, we can then calculate step metrics like cadence
 and step time:
 
@@ -116,6 +120,18 @@ and step time:
 
     cadence = sm.gait.cadence(time=t, peak_times=peak_times, time_units='ms')
     step_mean, step_sd, step_cov = sm.gait.step_time(peak_times=peak_times)
+
+Physical activity counts and intensities can also be calculated from the acceleration data:
+
+.. code:: python
+
+    x_counts = sm.pa.convert_counts(x, time, integrate='simpson')
+    y_counts = sm.pa.convert_counts(y, time, integrate='simpson')
+    z_counts = sm.pa.convert_counts(z, time, integrate='simpson')
+    vm = sm.signal.vector_magnitude(x_counts, y_counts, z_counts)
+    categories, time_spent = sm.pa.cut_points(vm, set_name='butte_preschoolers', n_axis=3)
+
+.. image:: images/pa_counts.png 
 
 For a more in-depth tutorial, and more workflow examples, please take a look
 at the `tutorial <https://github.com/sho-87/sensormotion/blob/master/tutorial.ipynb>`__.
