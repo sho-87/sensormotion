@@ -24,7 +24,7 @@ setup(
         "Tracker": "https://github.com/sho-87/sensormotion/issues",
     },
     author="Simon Ho",
-    author_email="simonho213@gmail.com",
+    author_email="simonho.ubc@gmail.com",
     license="MIT",
     packages=find_packages(),
     python_requires=">=3",
