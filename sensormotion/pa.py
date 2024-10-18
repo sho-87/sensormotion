@@ -21,7 +21,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sensormotion.signal
 
-from scipy.integrate import simps, trapz
+try:
+    # For SciPy 1.14+
+    from scipy.integrate import simpson, trapezoid
+except ImportError:
+    # For SciPy < 1.14
+    from scipy.integrate import simps as simpson, trapz as trapezoid
 
 
 def convert_counts(
@@ -128,9 +133,9 @@ def convert_counts(
         cur_time = time[lower:upper]
 
         if integrate == "simpson":
-            counts[i] = simps(cur_signal, cur_time)
+            counts[i] = simpson(cur_signal, cur_time)
         elif integrate == "trapezoid":
-            counts[i] = trapz(cur_signal, cur_time)
+            counts[i] = trapezoid(cur_signal, cur_time)
 
     # plot counts
     if plot:
