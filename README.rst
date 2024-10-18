@@ -18,9 +18,6 @@ Sensor Motion
 .. image:: https://readthedocs.org/projects/sensormotion/badge/?version=latest
    :target: http://sensormotion.readthedocs.io
 
-.. image:: https://badges.gitter.im/gitterHQ/gitter.png
-   :target: https://gitter.im/sensormotion/lobby
-
 .. inclusion-marker-main-readme
 
 Python package for analyzing sensor-collected human motion data (e.g.
@@ -165,5 +162,3 @@ or function: ``help(sm.gait.step_time)``
 You're encouraged to post questions, bug reports, or feature requests as
 an `issue <https://github.com/sho-87/sensormotion/issues>`__
 
-Alternatively, ask questions on
-`Gitter <https://gitter.im/sensormotion/lobby>`__
